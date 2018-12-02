@@ -15,6 +15,6 @@ defmodule Day1Star2 do
   def main do
     File.stream!(@file_name, [:read])
     |> sum_frequencies()
-    |> IO.puts
+    |> IO.puts()
   end
 end
