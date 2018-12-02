@@ -5,9 +5,9 @@ defmodule Day2Star2 do
   Takes an array of labels and returns a MapSet with all adjacent labels
   i.e. labels which differ by one character only
   """
-  def find_adjacent_in_all_labels([id | rest], result) do
-    new_result = find_adjecent_ids(id, rest, result)
-    find_adjacent_in_all_labels(rest, new_result)
+  def find_adjacent_in_all_labels([label | tail], %MapSet{} = result) do
+    new_result = find_adjecent_ids(label, tail, result)
+    find_adjacent_in_all_labels(tail, new_result)
   end
 
   def find_adjacent_in_all_labels([], result) do
@@ -27,7 +27,6 @@ defmodule Day2Star2 do
   defp find_adjecent_ids(_id, [], %MapSet{} = found_so_far) do
     found_so_far
   end
-
 
   @doc """
   Takes two labels and a MapSet and adds both labels to the mapset if they're
@@ -66,9 +65,8 @@ defmodule Day2Star2 do
   defp adjacent_ids?(charlist1, charlist2) do
     diff =
       Enum.zip(charlist1, charlist2)
-      |> Enum.reduce_while(0, fn {char1, char2}, acc ->
-        new_acc = (abs(char1 - char2) > 0 && acc + 1) || acc
-        if new_acc > 1, do: {:halt, new_acc}, else: {:cont, new_acc}
+      |> Enum.reduce(0, fn {char1, char2}, acc ->
+        (abs(char1 - char2) != 0 && acc + 1) || acc
       end)
 
     diff < 2
@@ -81,7 +79,7 @@ defmodule Day2Star2 do
     |> Enum.to_list()
     |> find_adjacent_in_all_labels(MapSet.new())
     |> Enum.to_list()
-    |> Enum.zip
+    |> Enum.zip()
     |> Enum.filter(fn {char1, char2} -> char1 == char2 end)
     |> Enum.map(fn {char, char} -> char end)
     |> to_string()
