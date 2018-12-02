@@ -84,6 +84,7 @@ defmodule Day2Star2 do
     |> Enum.zip
     |> Enum.filter(fn {char1, char2} -> char1 == char2 end)
     |> Enum.map(fn {char, char} -> char end)
-    |> IO.inspect()
+    |> to_string()
+    |> IO.puts()
   end
 end
