@@ -28,7 +28,7 @@ defmodule Day3Star2 do
 
       overlapping =
         search_list
-        |> Enum.reduce_while(0, fn {_label, r}, _overlapping_count ->
+        |> Enum.reduce_while(:not_important, fn {_label, r}, _not_important ->
           if MapSet.intersection(rect, r) |> MapSet.size() > 0 do
             {:halt, 1}
           else
