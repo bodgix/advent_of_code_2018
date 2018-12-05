@@ -38,9 +38,7 @@ defmodule Day3Star1 do
        }
   """
   def build_rect_map({_label, x, y, width, height} = _rect_tuple) do
-    rect_pts_list = for xs <- x..(x + width - 1), ys <- y..(y + height - 1), do: {xs, ys}
-
-    rect_pts_list
+    (for xs <- x..(x + width - 1), ys <- y..(y + height - 1), do: {xs, ys})
     |> Enum.reduce(%{}, &Map.put(&2, &1, 1))
   end
 
