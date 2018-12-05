@@ -25,3 +25,5 @@ aoc2018_1-*.tar
 /.elixir_ls
 
 .DS_Store
+
+/input-*
