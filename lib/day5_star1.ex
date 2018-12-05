@@ -5,9 +5,8 @@ defmodule Day5Star1 do
 
   @input_file 'input-day5'
 
-  def main() do
-    File.stream!(@input_file, [:read], 1)
-    |> Stream.map(&to_charlist/1)
+  def react_polymer(enumerable) do
+    enumerable
     |> Enum.reduce([], fn [unit], acc ->
       case acc do
         [] ->
@@ -22,6 +21,12 @@ defmodule Day5Star1 do
           end
       end
     end)
+  end
+
+  def main() do
+    File.stream!(@input_file, [:read], 1)
+    |> Stream.map(&to_charlist/1)
+    |> react_polymer()
     |> Enum.count()
     |> IO.puts()
   end
