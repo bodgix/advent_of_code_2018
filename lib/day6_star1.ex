@@ -97,7 +97,12 @@ defmodule Day6Star1 do
 
   ## Examples
 
-    iex> [{1, 1}, {1, 6}, {8, 3}, {3, 4}, {5, 5}, {8, 9}] |> Day6Star1.proximity_area({5, 5})
+    iex> [{1, 1}, {1, 6}, {8, 3}, {3, 4}, {5, 5}, {8, 9}]
+    ...> |> Day6Star1.proximity_area(
+    ...>      {5, 5},
+    ...>      [{1, 1}, {1, 6}, {8, 3}, {3, 4}, {5, 5}, {8, 9}]
+    ...>      |> Day6Star1.generate_frame()
+    ...>    )
     17
   """
   def proximity_area(points, {_x, _y} = point, frame) do
