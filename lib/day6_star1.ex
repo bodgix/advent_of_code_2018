@@ -18,43 +18,6 @@ defmodule Day6Star1 do
     |> Enum.to_list()
   end
 
-  @doc ~S"""
-  Groups coordinates into inner and outer
-
-  ## Examples
-
-    iex> [{1, 1}, {1, 6}, {8, 3}, {3, 4}, {5, 5}, {8, 9}] |> Day6Star1.group_into_inner_and_outer()
-    {MapSet.new([{1, 1}, {1, 6}, {8, 3}, {8, 9}]), MapSet.new([{3, 4}, {5, 5}])}
-
-  """
-
-  def group_into_inner_and_outer(enum) do
-    sorted_by_x =
-      enum
-      |> Enum.sort_by(fn {x, _y} -> x end)
-
-    sorted_by_y =
-      enum
-      |> Enum.sort_by(fn {_x, y} -> y end)
-
-    [min_x_1, min_x_2] = Enum.slice(sorted_by_x, 0..1) |> Enum.map(fn {x, _y} -> x end)
-    [max_x_1, max_x_2] = Enum.slice(sorted_by_x, -2..-1) |> Enum.map(fn {x, _y} -> x end)
-    [min_y_1, min_y_2] = Enum.slice(sorted_by_y, 0..1) |> Enum.map(fn {_x, y} -> y end)
-    [max_y_1, max_y_2] = Enum.slice(sorted_by_y, -2..-1) |> Enum.map(fn {_x, y} -> y end)
-
-    enum
-    |> Enum.reduce({MapSet.new(), MapSet.new()}, fn {x, y} = coord, {outer_set, inner_set} ->
-      cond do
-        x > min_x_1 && x > min_x_2 && x < max_x_1 && x < max_x_2 && y > min_y_1 && y > min_y_2 &&
-          y < max_y_1 && y < max_y_2 ->
-          {outer_set, MapSet.put(inner_set, coord)}
-
-        true ->
-          {MapSet.put(outer_set, coord), inner_set}
-      end
-    end)
-  end
-
   @doc """
   Creates a rectangle that contains all the `points` inside it's borders.
   Returns the upper-left and bottom-right coordinates
@@ -138,8 +101,6 @@ defmodule Day6Star1 do
     17
   """
   def proximity_area(points, {_x, _y} = point, frame) do
-    point |> IO.inspect(label: "Proximity area for")
-
     points = List.delete(points, point)
 
     first_square = MapSet.new([point])
@@ -184,8 +145,7 @@ defmodule Day6Star1 do
         end
       end)
 
-    (area + 1)
-    |> IO.inspect(label: "Result:")
+    area + 1
   end
 
   def manhatan_distances(points, point) do
@@ -204,23 +164,6 @@ defmodule Day6Star1 do
   def build_square({x, y} = _point, radius) do
     for(xs <- (x - radius)..(x + radius), ys <- (y - radius)..(y + radius), do: {xs, ys})
     |> MapSet.new()
-  end
-
-  def draw(enum) do
-    frame = Frame.init(353, 353, RGBA.white())
-
-    filled_frame =
-      enum
-      |> Enum.reduce(frame, fn {x, y}, frame ->
-        new_frame =
-          frame
-          |> Frame.push(Point.init(x, y), RGBA.black())
-
-        new_frame
-      end)
-
-    filled_frame
-    |> PNG.to_png("points.png")
   end
 
   def main() do
