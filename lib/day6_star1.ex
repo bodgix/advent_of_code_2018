@@ -113,6 +113,7 @@ defmodule Day6Star1 do
     {area, _last_square} =
       Stream.iterate(1, &(&1 + 1))
       |> Enum.reduce_while({0, first_square}, fn radius, {area, prev_square} ->
+        IO.write(".")
         cur_square = build_square(point, radius)
 
         partial_areas =
@@ -149,7 +150,7 @@ defmodule Day6Star1 do
             {:halt, {area, cur_square}}
         end
       end)
-
+    IO.puts("")
     area + 1
   end
 
